@@ -1,2 +1,3 @@
 # mtg_counter
-MTG counter
+MTG online counter
+
