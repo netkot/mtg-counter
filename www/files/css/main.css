@@ -43,8 +43,15 @@ body
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
-    background: #fefedf;
+    background-size: cover;
     }
+    .green  { background-color: #26b569; color: #fff; background-image: url('../../img/green.jpg') }
+    .red    { background-color: #f85555; color: #fff; background-image: url('../../img/red.jpg')   }
+    .black  { background-color: #000;    color: #fff; background-image: url('../../img/black.jpg') }
+    .blue   { background-color: #67c1f5; color: #fff; background-image: url('../../img/blue.jpg')  }
+    .white  { background-color: #fefedf; color: #fff; background-image: url('../../img/white.jpg') }
+
+
     .p2
         {
         transform-origin: top center;
@@ -80,6 +87,7 @@ body
         width: 100%;
         font-weight: 700;
         font-size: 2em;
+        text-shadow: 0 0 4px rgba(0,0,0,1);
         }    
 
     .m, .p
@@ -112,6 +120,8 @@ body
         background: rgba(255,0,0,0.5);
         z-index: 100;
         }
+
+
 
 .mana
     {
@@ -169,28 +179,41 @@ body
     .mana div:nth-child(5)  {background-image: url(../../img/white.png) }
 
 
-.player .dice
+.player .dice_shadow
     {
     display: none;
     position: absolute;
     top:  10%;
     right: 10%;
-    width: 100px;
-    height: 100px;
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    z-index: 100;
+    height: 143px;
+    width: 143px;
+    background-image: url(../../img/dice_shadow.png) 
     }
-    .player .dice.rolled {background-image: url(../../img/dice_rolled.png) }
-    .player .dice.static {background-image: url(../../img/dice_static.png) }
+    .player.p2   .dice_shadow  { transform: rotate(180deg) }
+    .player.r90  .dice_shadow  { transform: rotate(270deg) }
+    .player.r-90 .dice_shadow  { transform: rotate(90deg)  }
+
+    .player .dice
+        {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100px;
+        height: 100px;
+        background-position: 0 0;
+        background-repeat: no-repeat;
+        z-index: 100;
+        }
+        .player .dice.rolled {background-image: url(../../img/dice_rolled.png) }
+        .player .dice.static {background-image: url(../../img/dice_static.png) }
 
 
-    .player .dice.d1 {background-position:      0 0 }
-    .player .dice.d2 {background-position: -100px 0 }
-    .player .dice.d3 {background-position: -200px 0 }
-    .player .dice.d4 {background-position: -300px 0 }
-    .player .dice.d5 {background-position: -400px 0 }
-    .player .dice.d6 {background-position: -500px 0 }
+        .player .dice.d1 {background-position:      0 0 }
+        .player .dice.d2 {background-position: -100px 0 }
+        .player .dice.d3 {background-position: -200px 0 }
+        .player .dice.d4 {background-position: -300px 0 }
+        .player .dice.d5 {background-position: -400px 0 }
+        .player .dice.d6 {background-position: -500px 0 }
 
 
 
@@ -268,6 +291,7 @@ body
     overflow: hidden;
     transition: all 0.5s ease;
     cursor: pointer;
+    color: #fff;
     }
     .layout_4_playes .fullscreen
         {

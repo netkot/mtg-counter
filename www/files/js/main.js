@@ -50,7 +50,7 @@ function init_events ()
         reset_counters ();
         toggleSettings();
         });
-    $('.settings .dice').click(function()
+    $('.dice').click(function()
         {
         play_click_snd ();
         toggleSettings();
@@ -58,7 +58,7 @@ function init_events ()
 
         // Fade out dices
         setTimeout(function() {
-            $('.player .dice').fadeOut()
+            $('.player .dice_shadow').fadeOut()
             }, 5000);
         });
     $('.settings .two_player').click(function()
@@ -91,15 +91,8 @@ function show_result (obj, value)
 
 function set_color(obj)
     {
-    var bg_color_arr   = ['#26b569', '#f85555', '#000', '#67c1f5', '#fefedf'];
-    var font_color_arr = ['#000', '#000', '#fff', '#000', '#000'];
-
-    var obj_index = $(obj).index();
-    var new_bg_color = bg_color_arr [obj_index];
-    var new_font_color = font_color_arr [obj_index];
-    
-    $(obj).parentsUntil('.player').parent().css('background-color', new_bg_color).css('color', new_font_color);
-    //toggleSettings();
+    var mana_class = $(obj).attr('data-color');
+    $(obj).parentsUntil('.player').parent().removeClass('green red black blue white').addClass(mana_class);
     }
 
 function toggleSettings()
@@ -121,7 +114,7 @@ function play_click_snd ()
 
 function roll_dices ()
     {
-    $('.player .dice').show();
+    $('.player .dice_shadow').show();
 
     dices_snd.play(); 
     dices_snd.currentTime=0;
@@ -231,7 +224,7 @@ function init_2_player_layout ()
     $( ".og" ).removeClass('r90');
 
     $( ".main_wrap" ).removeClass('layout_3_playes layout_4_playes').addClass('layout_2_playes');
-    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p2').removeClass('og').css('background','#000').css('color','#fff');
+    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p2').removeClass('og green red black blue white').addClass('black');
     reset_counters ();
     }
 function init_3_player_layout ()
@@ -239,8 +232,8 @@ function init_3_player_layout ()
     $( ".clone").remove();
     $( ".og" ).removeClass('r90');
     $( ".main_wrap" ).removeClass('layout_2_playes layout_4_playes').addClass('layout_3_playes');
-    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p2 r90').removeClass('og').css('background','#000').css('color','#fff');
-    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p2 r-90').removeClass('og').css('background','#f85555');
+    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p2 r90').removeClass('og green red black blue white').addClass('black');
+    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p3 r-90').removeClass('og green red black blue white').addClass('red');
     reset_counters ();
     }
 function init_4_player_layout ()
@@ -248,9 +241,8 @@ function init_4_player_layout ()
     $( ".clone").remove();
     init_3_player_layout ();
     $( ".main_wrap" ).removeClass('layout_3_playes layout_2_playes').addClass('layout_4_playes');
-
     $( ".og" ).addClass('r90');
-    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p4 r-90').removeClass('og').css('background','#67c1f5');
+    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p4 r-90').removeClass('og green red black blue white').addClass('blue');
 
     reset_counters ();
     }
