@@ -20,16 +20,6 @@ body
     height: 100%;
     }
 
-.fullscreen
-    {
-    position: absolute;
-    font-size: 42px;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    display: none;
-    }
 .noselect
     {
     -webkit-touch-callout: none;
@@ -67,12 +57,22 @@ body
         width: 50vh;
         height: 50vw;
         }
+    .og.r90
+        {
+        transform: rotate(90deg) translate(0, -50vw);
+        }
+
+
     .r-90
         {
         transform-origin: top left;
         transform: rotate(-90deg) translate(0, 50vw);
         width: 50vh;
         height: 50vw;
+        }
+    .p4.r-90
+        {
+        transform: rotate(-90deg) translate(-50vh, 50vw);
         }
 
     .cnt
@@ -110,7 +110,7 @@ body
         height: 50px;
         outline: 1px red solid;
         background: rgba(255,0,0,0.5);
-        z-index: 9999;
+        z-index: 100;
         }
 
 .mana
@@ -135,19 +135,22 @@ body
         {
         width: calc(100% - 20px);
         }
-    .r90 .mana
+    .r90 .mana,
+    .p4.r-90 .mana 
         {
-        margin: 0 20px 0 0;
+        margin: 0 20px 0 0 
         }
-    .r-90 .mana
+    .og.r90 .mana, 
+    .r-90 .mana  
         {
-        margin: 0 0 0 20px;
+        margin: 0 0 0 20px 
         }
+    
     .mana.active
         {
         height: 120px;
         opacity: 1;
-        z-index: 9999;
+        z-index: 100;
         }
     .mana div
         {
@@ -166,6 +169,31 @@ body
     .mana div:nth-child(5)  {background-image: url(../../img/white.png) }
 
 
+.player .dice
+    {
+    display: none;
+    position: absolute;
+    top:  10%;
+    right: 10%;
+    width: 100px;
+    height: 100px;
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    z-index: 100;
+    }
+    .player .dice.rolled {background-image: url(../../img/dice_rolled.png) }
+    .player .dice.static {background-image: url(../../img/dice_static.png) }
+
+
+    .player .dice.d1 {background-position:      0 0 }
+    .player .dice.d2 {background-position: -100px 0 }
+    .player .dice.d3 {background-position: -200px 0 }
+    .player .dice.d4 {background-position: -300px 0 }
+    .player .dice.d5 {background-position: -400px 0 }
+    .player .dice.d6 {background-position: -500px 0 }
+
+
+
 
 .settings
     {
@@ -177,13 +205,15 @@ body
     margin-top: 0px;
     display: flex;
     justify-content: space-around;
-    z-index: 9999;
+    z-index: 100;
     transition: all 0.5s ease;
+    background: rgba(0,0,0,0.1);
     }
     .settings.active
         {
         top: calc(50% - 20px);
         height: 40px;
+        background: rgba(0,0,0,0.5);
         }
     .settings .icon
         {
@@ -224,4 +254,36 @@ body
     .layout_4_playes .icon.four_player  {display: none }
     
 
+.fullscreen
+    {
+    position: absolute;
+    font-size: 42px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 200;
+    opacity: 0;
+    height: 1;
+    overflow: hidden;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    }
+    .layout_4_playes .fullscreen
+        {
+        left: calc((100% - 50vh + 20px) / 2);
+        width: calc(50vh - 20px);
+        transform-origin: center bottom;
+        transform: rotate(90deg) translate(calc(-25vh + 10px), 30px);
+        }
+
+    .fullscreen.active
+        {
+        opacity: 1;
+        height: 60px;
+        background: rgba(0,0,0,0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
 
