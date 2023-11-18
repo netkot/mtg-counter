@@ -12,6 +12,21 @@ $(function()
     });
 
 
+const canWakeLock = () => 'wakeLock' in navigator;
+
+let wakelock;
+async function lockWakeState() {
+  if(!canWakeLock()) return;
+  try {
+    wakelock = await navigator.wakeLock.request();
+  } catch(e) {
+    console.error('Failed to lock wake state with reason:', e.message);
+  }
+}
+
+lockWakeState();
+
+
 function init_events ()
     {
     // Player card events 
@@ -246,3 +261,5 @@ function init_4_player_layout ()
 
     reset_counters ();
     }
+
+
