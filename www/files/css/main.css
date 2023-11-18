@@ -255,7 +255,7 @@ body
         opacity: 1;
         }
 
-    .icon.cog           {   background-image: url(../../img/settings.png); opacity: 0.05; display: block; }
+    .icon.cog           {   background-image: url(../../img/settings.png); opacity: 0.3; display: block; }
     .icon.reset         {   background-image: url(../../img/reset.png)    }
     .icon.dice          {   background-image: url(../../img/dice.png)     }
     .icon.two_player    {   background-image: url(../../img/2_player.png) }
