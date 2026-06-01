@@ -88,7 +88,24 @@ body
         font-weight: 700;
         font-size: 2em;
         text-shadow: 0 0 4px rgba(0,0,0,1);
-        }    
+        }
+
+    .delta
+        {
+        position: absolute;
+        top: 14%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 40px;
+        font-weight: 700;
+        color: #fff;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.6);
+        z-index: 51;
+        pointer-events: none;
+        display: none;
+        white-space: nowrap;
+        letter-spacing: 2px;
+        }
 
     .m, .p
         {
@@ -227,11 +244,18 @@ body
     height: 1px;
     margin-top: 0px;
     display: flex;
-    justify-content: space-around;
     z-index: 100;
     transition: all 0.5s ease;
     background: rgba(0,0,0,0.1);
     }
+    .settings-left,
+    .settings-right
+        {
+        flex: 1;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+        }
     .settings.active
         {
         top: calc(50% - 20px);
@@ -256,8 +280,21 @@ body
         }
 
     .icon.cog           {   background-image: url(../../img/settings.png); opacity: 0.3; display: block; }
-    .icon.reset         {   background-image: url(../../img/reset.png)    }
     .icon.dice          {   background-image: url(../../img/dice.png)     }
+
+    .icon.life20,
+    .icon.life40
+        {
+        background-image: none;
+        font-size: 36px;
+        font-weight: 700;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-shadow: 0 0 6px rgba(0,0,0,1);
+        width: 30px;
+        }
     .icon.two_player    {   background-image: url(../../img/2_player.png) }
     .icon.three_player  {   background-image: url(../../img/3_player.png) }
     .icon.four_player   {   background-image: url(../../img/4_player.png) }
@@ -275,6 +312,124 @@ body
     .layout_2_playes .icon.two_player   {display: none }
     .layout_3_playes .icon.three_player {display: none }
     .layout_4_playes .icon.four_player  {display: none }
+
+@media (max-width: 480px)
+    {
+    .icon.life20,
+    .icon.life40
+        {
+        font-size: 24px;
+        }
+    }
+
+
+/* Poison toggle button */
+.poison-toggle
+    {
+    position: absolute;
+    bottom: 12px;
+    right: 14px;
+    font-size: 30px;
+    color: rgba(255, 255, 255, 0.85);
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    cursor: pointer;
+    z-index: 51;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+    transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+    }
+.settings-open .poison-toggle
+    {
+    display: flex;
+    pointer-events: auto;
+    bottom: 72px;
+    }
+.settings-open .player.poison-active .poison-toggle
+    {
+    color: #e080ff;
+    background: rgba(100, 0, 160, 0.7);
+    border-color: rgba(200, 100, 255, 0.7);
+    text-shadow: 0 0 12px rgba(200, 50, 255, 1);
+    }
+
+/* Poison counter */
+.poison
+    {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    display: none;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 30px;
+    font-size: 20px;
+    color: #fff;
+    text-shadow: 0 0 4px rgba(0,0,0,0.8);
+    white-space: nowrap;
+    }
+    .pm, .pp
+        {
+        cursor: pointer;
+        font-size: 22px;
+        line-height: 1;
+        padding: 7px 13px;
+        }
+    .pcnt
+        {
+        min-width: 1.6em;
+        text-align: center;
+        font-weight: 700;
+        padding: 7px 2px;
+        }
+    .pcnt::before
+        {
+        content: '☠ ';
+        }
+
+.player.poison-active .poison
+    {
+    display: flex;
+    }
+.player.poisoned .poison
+    {
+    background: rgba(90, 0, 110, 0.8);
+    }
+.player.poisoned::before
+    {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(80, 0, 130, 0.45);
+    z-index: 44;
+    pointer-events: none;
+    }
+.player.poisoned::after
+    {
+    content: '☠';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 140px;
+    color: #e070ff;
+    text-shadow: 0 0 40px rgba(180, 0, 255, 1), 0 0 15px rgba(0, 0, 0, 1);
+    z-index: 46;
+    opacity: 0.9;
+    pointer-events: none;
+    }
+.player.poisoned .cnt
+    {
+    opacity: 0.4;
+    }
     
 
 .fullscreen
