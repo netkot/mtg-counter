@@ -6,6 +6,9 @@ $(function()
     click_snd = new Audio("files/sounds/click.mp3");
     dices_snd = new Audio("files/sounds/dice_roll.mp3");
 
+    if (window.Capacitor && window.Capacitor.isNativePlatform())
+        $('body').addClass('native-app');
+
     if (!load_state())
         init_2_player_layout();
 

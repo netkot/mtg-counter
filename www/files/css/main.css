@@ -466,3 +466,8 @@ body
         align-items: center;
         }
 
+.native-app .fullscreen
+    {
+    display: none !important;
+    }
+
