@@ -4,7 +4,7 @@ I would like to introduce you to my simple MTG life counter. I wrote it for my o
 
 Here is the online version, it is assumed that you can open it on your phone and put your phone between the players:
 
-https://spawner.space/mtg/
+https://netkot.github.io/mtg-counter/
 
 Of course, I'm aware that there are great apps like LifeTap and WotC Companion, but I love creating websites, and this was most likely just training.
 
