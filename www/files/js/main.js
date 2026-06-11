@@ -18,19 +18,16 @@ $(function()
 
 function save_state()
     {
-    var colors = ['green', 'red', 'black', 'blue', 'white'];
     var players = [];
     $('.player').each(function()
         {
-        var el    = $(this);
-        var color = 'white';
-        colors.forEach(function(c) { if (el.hasClass(c)) color = c; });
+        var el = $(this);
         players.push({
             life:          parseInt(el.find('.cnt').text()),
             poison:        parseInt(el.find('.pcnt').text()) || 0,
             poison_active: el.hasClass('poison-active'),
             poisoned:      el.hasClass('poisoned'),
-            color:         color
+            colors:        get_player_colors(el)
             });
         });
     try {
@@ -61,7 +58,8 @@ function load_state()
             el.find('.pcnt').text(p.poison);
             if (p.poison_active) el.addClass('poison-active');
             if (p.poisoned)      el.addClass('poisoned');
-            if (p.color)         el.removeClass('green red black blue white').addClass(p.color);
+            var colors = p.colors || (p.color ? [p.color] : null);
+            if (colors) apply_player_colors(el, colors);
             });
         return true;
         } catch(e) {
@@ -217,10 +215,71 @@ function update_delta (player, value)
         }, 1500));
     }
 
+var mana_hex = {
+    green: '#26b569',
+    red:   '#f85555',
+    black: '#000000',
+    blue:  '#67c1f5',
+    white: '#fefedf'
+    };
+
+function get_player_colors (player)
+    {
+    var colors = player.data('colors');
+    if (colors && colors.length) return colors.slice();
+    var found = [];
+    for (var c in mana_hex)
+        if (player.hasClass(c)) found.push(c);
+    return found.length ? found : ['white'];
+    }
+
+function apply_player_colors (player, colors)
+    {
+    colors = (colors || []).filter(function(c) { return mana_hex[c]; });
+    if (!colors.length) colors = ['white'];
+    player.data('colors', colors);
+    player.removeClass('green red black blue white multicolor').css('background', '');
+    player.children('.player-bg').remove();
+
+    // First color comes from the usual player class, the rest are stacked
+    // image layers, each one masked so it fades in over the previous stripe
+    player.addClass(colors[0]);
+    if (colors.length > 1)
+        {
+        player.addClass('multicolor');
+        var bg = $('<div class="player-bg"></div>');
+        var n  = colors.length;
+        for (var i = 1; i < n; i++)
+            {
+            var boundary = 100 * i / n;
+            var fade     = 25 / n;
+            var mask     = 'linear-gradient(to right, transparent ' + (boundary - fade) + '%, #000 ' + (boundary + fade) + '%)';
+            $('<div class="bg-' + colors[i] + '"></div>')
+                .css({ '-webkit-mask-image': mask, 'mask-image': mask })
+                .appendTo(bg);
+            }
+        player.prepend(bg);
+        }
+
+    player.find('.mana > div').each(function()
+        {
+        $(this).toggleClass('selected', colors.indexOf($(this).attr('data-color')) !== -1);
+        });
+    }
+
 function set_color(obj)
     {
-    var mana_class = $(obj).attr('data-color');
-    $(obj).parentsUntil('.player').parent().removeClass('green red black blue white').addClass(mana_class);
+    var mana   = $(obj).attr('data-color');
+    var player = $(obj).closest('.player');
+    var colors = get_player_colors(player);
+    var idx    = colors.indexOf(mana);
+
+    if (idx === -1)
+        colors.push(mana);
+    else if (colors.length > 1)
+        colors.splice(idx, 1);
+
+    apply_player_colors(player, colors);
     save_state();
     }
 
@@ -362,6 +421,13 @@ function randomIntFromInterval(min, max)
 
 
 
+function clone_player (extra_classes, colors)
+    {
+    var clone = $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone ' + extra_classes).removeClass('og');
+    apply_player_colors(clone, colors);
+    return clone;
+    }
+
 function init_2_player_layout ()
     {
     current_layout = 2;
@@ -369,7 +435,8 @@ function init_2_player_layout ()
     $( ".og" ).removeClass('r90');
 
     $( ".main_wrap" ).removeClass('layout_3_playes layout_4_playes').addClass('layout_2_playes');
-    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p2').removeClass('og green red black blue white').addClass('black');
+    clone_player('p2', ['black']);
+    apply_player_colors($( ".og" ), get_player_colors($( ".og" )));
     reset_counters ();
     }
 function init_3_player_layout ()
@@ -378,8 +445,9 @@ function init_3_player_layout ()
     $( ".clone").remove();
     $( ".og" ).removeClass('r90');
     $( ".main_wrap" ).removeClass('layout_2_playes layout_4_playes').addClass('layout_3_playes');
-    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p2 r90').removeClass('og green red black blue white').addClass('black');
-    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p3 r-90').removeClass('og green red black blue white').addClass('red');
+    clone_player('p2 r90',  ['black']);
+    clone_player('p3 r-90', ['red']);
+    apply_player_colors($( ".og" ), get_player_colors($( ".og" )));
     reset_counters ();
     }
 function init_4_player_layout ()
@@ -389,7 +457,7 @@ function init_4_player_layout ()
     init_3_player_layout ();
     $( ".main_wrap" ).removeClass('layout_3_playes layout_2_playes').addClass('layout_4_playes');
     $( ".og" ).addClass('r90');
-    $( ".og" ).clone().appendTo( ".main_wrap" ).addClass('clone p4 r-90').removeClass('og green red black blue white').addClass('blue');
+    clone_player('p4 r-90', ['blue']);
 
     reset_counters ();
     }

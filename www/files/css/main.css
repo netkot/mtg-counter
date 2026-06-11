@@ -1,11 +1,13 @@
 html,body,ul,ol,li,p,td,h1,h2,h3,h4,h5,h6,form,fieldset,a,img{margin:0;padding:0;border:0}
 a img{border:none;cursor:pointer;text-decoration:none}
 
-html, body  
+html, body
     {
     height:100%;
     font-family: Helvetica;
     font-size: 72px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
     }
 body 
     {
@@ -44,7 +46,29 @@ body
     align-items: center;
     box-sizing: border-box;
     background-size: cover;
+    isolation: isolate;
     }
+    /* Extra color layers for multicolor backgrounds: each layer shows its
+       mana image and is masked to fade in over the previous stripe */
+    .player-bg
+        {
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+        z-index: -1;
+        pointer-events: none;
+        }
+        .player-bg div
+            {
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background-size: cover;
+            background-position: center center;
+            }
+        .player-bg .bg-green  { background-color: #26b569; background-image: url('../../img/green.jpg') }
+        .player-bg .bg-red    { background-color: #f85555; background-image: url('../../img/red.jpg')   }
+        .player-bg .bg-black  { background-color: #000;    background-image: url('../../img/black.jpg') }
+        .player-bg .bg-blue   { background-color: #67c1f5; background-image: url('../../img/blue.jpg')  }
+        .player-bg .bg-white  { background-color: #fefedf; background-image: url('../../img/white.jpg') }
     .green  { background-color: #26b569; color: #fff; background-image: url('../../img/green.jpg') }
     .red    { background-color: #f85555; color: #fff; background-image: url('../../img/red.jpg')   }
     .black  { background-color: #000;    color: #fff; background-image: url('../../img/black.jpg') }
@@ -188,6 +212,13 @@ body
         background-repeat: no-repeat;
         box-sizing: border-box;
         cursor: pointer;
+        border-radius: 50%;
+        border: 3px solid transparent;
+        }
+    .mana div.selected
+        {
+        border-color: #ffd700;
+        box-shadow: 0 0 12px rgba(255,215,0,0.9);
         }
     .mana div:nth-child(1)  {background-image: url(../../img/green.png) }
     .mana div:nth-child(2)  {background-image: url(../../img/red.png) }
@@ -464,5 +495,11 @@ body
         display: flex;
         justify-content: center;
         align-items: center;
+        }
+
+    /* Native app is always fullscreen (immersive mode), the button is useless there */
+    body.native-app .fullscreen
+        {
+        display: none !important;
         }
 
