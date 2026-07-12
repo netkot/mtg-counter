@@ -206,7 +206,7 @@ body
     .mana div
         {
         width: 80px;
-        height: 80px;
+        aspect-ratio: 1 / 1;
         background-size: auto 90%;
         background-position: center center;
         background-repeat: no-repeat;
