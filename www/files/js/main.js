@@ -116,6 +116,19 @@ function init_events ()
         play_click_snd ();
         toggleSettings();
         });
+    $('.info-toggle').click(function()
+        {
+        play_click_snd ();
+        $('.info-screen').addClass('active');
+        });
+    $('.info-screen').on('click', function(e)
+        {
+        if (e.target === this || $(e.target).hasClass('info-close'))
+            {
+            play_click_snd ();
+            $('.info-screen').removeClass('active');
+            }
+        });
     $('.settings .life20').click(function()
         {
         play_click_snd ();
