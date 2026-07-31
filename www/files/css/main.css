@@ -215,6 +215,13 @@ body
         border-radius: 50%;
         border: 3px solid transparent;
         }
+    @supports not (aspect-ratio: 1 / 1)
+        {
+        .mana div
+            {
+            height: 80px;
+            }
+        }
     .mana div.selected
         {
         border-color: #ffd700;
