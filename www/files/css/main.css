@@ -219,7 +219,11 @@ body
         {
         .mana div
             {
-            height: 80px;
+            /* padding-top % resolves against width, so it tracks the shrunk width where a fixed height wouldn't */
+            width: 20%;
+            max-width: 80px;
+            height: 0;
+            padding-top: calc(20% - 6px);
             }
         }
     .mana div.selected
