@@ -173,11 +173,6 @@ function init_events ()
         play_click_snd ();
         toggleSettings();
         roll_dices ();
-
-        // Fade out dices
-        setTimeout(function() {
-            $('.player .dice_shadow').fadeOut()
-            }, 5000);
         });
     $('.settings .two_player').click(function()
         {
@@ -328,21 +323,36 @@ function play_click_snd ()
     click_snd.currentTime=0;
     }
 
+var dice_roll_session = 0;
+var dice_shadow_timer = null;
+
 function roll_dices ()
     {
-    $('.player .dice_shadow').show();
+    dice_roll_session++;
+    var session = dice_roll_session;
 
-    dices_snd.play(); 
-    dices_snd.currentTime=0;
+    clearTimeout(dice_shadow_timer);
+    $('.player .dice_shadow').stop(true, true).show();
+
+    dices_snd.pause();
+    dices_snd.currentTime = 0;
+    dices_snd.play();
 
     how_many_rolls = 10;
     roll_cnt = 0;
-    slow_roll_dices ();
+    slow_roll_dices (session);
+
+    // Fade out dices
+    dice_shadow_timer = setTimeout(function() {
+        $('.player .dice_shadow').fadeOut()
+        }, 5000);
     }
 
 
-function slow_roll_dices ()
+function slow_roll_dices (session)
     {
+    if (session !== dice_roll_session) return;
+
     max_roll = 0;
     max_roll_cnt = 1;
     last_val = 0;
@@ -350,7 +360,7 @@ function slow_roll_dices ()
         val =  randomIntFromInterval(1, 6);
         if (val > max_roll)
             max_roll = val;
-        else    
+        else
             {
             if (max_roll == val)
                 max_roll_cnt++;
@@ -368,7 +378,7 @@ function slow_roll_dices ()
     if (roll_cnt < how_many_rolls)
         {
         setTimeout(function() {
-            slow_roll_dices ();
+            slow_roll_dices (session);
             }, roll_cnt * 15);
         }
     else
@@ -379,18 +389,20 @@ function slow_roll_dices ()
         if (max_roll_cnt > 1)
             {
 //            console.log ('Fast reroll!');
-            fast_roll_dices ();
+            fast_roll_dices (session);
             }
 
         setTimeout(function() {
-            stop_roll ();
+            stop_roll (session);
             }, 100);
         }
     }
 
 
-function fast_roll_dices ()
+function fast_roll_dices (session)
     {
+    if (session !== dice_roll_session) return;
+
     max_roll = 0;
     max_roll_cnt = 1;
     last_val = 0;
@@ -398,7 +410,7 @@ function fast_roll_dices ()
         val =  randomIntFromInterval(1, 6);
         if (val > max_roll)
             max_roll = val;
-        else    
+        else
             {
             if (max_roll == val)
                 max_roll_cnt++;
@@ -416,14 +428,15 @@ function fast_roll_dices ()
 
     if (max_roll_cnt > 1)
         {
-        fast_roll_dices ();
+        fast_roll_dices (session);
 //        console.log ('Fast reroll! Again!');
         }
 
     }
 
-function stop_roll ()
+function stop_roll (session)
     {
+    if (session !== dice_roll_session) return;
     $('.player .dice').removeClass('rolled').addClass('static');
     }
 
